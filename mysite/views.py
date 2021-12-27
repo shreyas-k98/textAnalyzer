@@ -14,17 +14,17 @@ def practice(request):
 def analyse(request):
     # getting the text
     # From index.html by using name="text" we transfer data from text area to djtext
-    djtext = request.GET.get("text", "none")
+    djtext = request.POST.get("text", "none")
     # From index.html by using name="removepunc" we transfer data from checkbox input  to  option_button
-    removepunc = request.GET.get("removepunc", "off")
+    removepunc = request.POST.get("removepunc", "off")
     # From index.html by using name="capitalize" we transfer data from checkbox input  to  capitalize
-    capitalize = request.GET.get("capitalize", "off")
+    capitalize = request.POST.get("capitalize", "off")
     # Capitalize the content of djtext
-    newlineremover = request.GET.get("newlineremover", "off")
+    newlineremover = request.POST.get("newlineremover", "off")
 
-    sremove = request.GET.get("sremove", "off")
+    sremove = request.POST.get("sremove", "off")
 
-    charcount = request.GET.get("charcount", "off")
+    charcount = request.POST.get("charcount", "off")
 
     print("Whole Text : ", djtext)
     print("Remove Punctuations : ", removepunc)
@@ -38,28 +38,31 @@ def analyse(request):
             if char not in punctuations:
                 analysed = analysed + char
         print("Analysed Text : ", analysed)
-        params = {'purpose': purpose, 'analysed_text': analysed}
-        return render(request, "analyse.html", params)
+        # params = {'purpose': purpose, 'analysed_text': analysed}
+        # return render(request, "analyse.html", params)
+        djtext = analysed
 
-    elif capitalize == "on":
+    if capitalize == "on":
         analysed = ""
         purpose = "Making Upper Case !!!"
         for char in djtext:
             analysed = analysed + char.upper()
         print("Analysed Text : ", analysed)
-        params = {'purpose': purpose, 'analysed_text': analysed}
-        return render(request, "analyse.html", params)
+        # params = {'purpose': purpose, 'analysed_text': analysed}
+        # return render(request, "analyse.html", params)
+        djtext = analysed
 
-    elif newlineremover == "on":
+    if newlineremover == "on":
         analysed = ""
         for char in djtext:
             if char != "\n":
                 analysed = analysed + char
         purpose = "Removing New Line"
-        params = {'purpose': purpose, 'analysed_text': analysed}
-        return render(request, "analyse.html", params)
+        # params = {'purpose': purpose, 'analysed_text': analysed}
+        # return render(request, "analyse.html", params)
+        djtext = analysed
 
-    elif sremove == "on":
+    if sremove == "on":
         analysed = ""
         for index, char in enumerate(djtext):
             if djtext[index] == " " and djtext[index+1] == " ":
@@ -68,17 +71,18 @@ def analyse(request):
                 analysed = analysed + char
 
         purpose = "Removing New Line"
-        params = {'purpose': purpose, 'analysed_text': analysed}
-        return render(request, "analyse.html", params)
+        # params = {'purpose': purpose, 'analysed_text': analysed}
+        # return render(request, "analyse.html", params)
+        djtext = analysed
 
-    elif charcount == "on":
+    if charcount == "on":
         analysed = len(djtext)
         print(analysed)
         purpose = "Counting Characters "
         params = {"purpose": purpose, "analysed_text": analysed}
         return render(request, "charcount.html", params)
 
-    else:
-        purpose = "Dont Remove Punctuations !!!"
-        params = {'purpose': purpose, 'analysed_text': djtext}
-        return render(request, "analyse.html", params)
+    
+
+    params = {'purpose': purpose, 'analysed_text': djtext}
+    return render(request, "analyse.html", params)

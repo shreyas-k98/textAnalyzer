@@ -43,7 +43,8 @@
   <div class="container-fluid">
 
   </div>
-  <form class="container" action="/analyse">
+  <!-- CSRF TOKEN -->
+  <form class="container" action="/analyse" method="post"> {% csrf_token %}   
     <div class="container">
       <textarea class="form-control" name="text" placeholder="Enter Your Text" id="floatingTextarea" style="margin-top: 0px; margin-bottom: 0px; height: 102px;"></textarea>
     </div>
